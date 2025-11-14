@@ -1,0 +1,25 @@
+default: &default
+  pipelines: "*"
+  logger:
+    level: 1
+    source: default
+  job_worker:
+    count: 5
+    max_retry: 3
+    polling_timeout: 1
+    shutdown_timeout: 20
+  pipeline_advancer:
+    polling_timeout: 1
+    shutdown_timeout: 20
+  supervisor:
+    polling_timeout: 1
+    shutdown_timeout: 30
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
