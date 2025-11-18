@@ -1,6 +1,8 @@
 # Ductwork Examples
 
-Rails application with example pipelines
+Rails application with example pipelines. See online documentation for more details.
+
+**[Full Documentation](https://docs.getductwork.io/)**
 
 ## Setup
 
