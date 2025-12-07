@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_15_003859) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_07_001446) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -21,6 +21,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_15_003859) do
     t.integer "process_id"
     t.datetime "started_at", precision: nil, null: false
     t.datetime "updated_at", null: false
+    t.index ["completed_at", "started_at", "created_at"], name: "index_ductwork_availabilities_on_claim_latest"
     t.index ["execution_id"], name: "index_ductwork_availabilities_on_execution_id", unique: true
     t.index ["id", "process_id"], name: "index_ductwork_availabilities_on_id_and_process_id"
   end
@@ -33,15 +34,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_15_003859) do
     t.integer "retry_count", null: false
     t.datetime "started_at", precision: nil, null: false
     t.datetime "updated_at", null: false
+    t.index ["job_id", "created_at"], name: "index_ductwork_executions_on_job_id_and_created_at"
     t.index ["job_id"], name: "index_ductwork_executions_on_job_id"
   end
 
   create_table "ductwork_jobs", force: :cascade do |t|
     t.datetime "completed_at", precision: nil
     t.datetime "created_at", null: false
-    t.string "input_args", null: false
+    t.text "input_args", null: false
     t.string "klass", null: false
-    t.string "output_payload"
+    t.text "output_payload"
     t.datetime "started_at", precision: nil, null: false
     t.bigint "step_id", null: false
     t.datetime "updated_at", null: false
@@ -52,10 +54,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_15_003859) do
     t.datetime "claimed_for_advancing_at", precision: nil
     t.datetime "completed_at", precision: nil
     t.datetime "created_at", null: false
-    t.string "definition", null: false
+    t.text "definition", null: false
     t.string "definition_sha1", null: false
     t.string "klass", null: false
     t.datetime "last_advanced_at", precision: nil, null: false
+    t.datetime "started_at", precision: nil, null: false
     t.string "status", null: false
     t.datetime "triggered_at", precision: nil, null: false
     t.datetime "updated_at", null: false
@@ -79,6 +82,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_15_003859) do
     t.bigint "execution_id", null: false
     t.string "result_type", null: false
     t.datetime "updated_at", null: false
+    t.index ["execution_id"], name: "index_ductwork_results_on_execution_id", unique: true
   end
 
   create_table "ductwork_runs", force: :cascade do |t|
@@ -87,6 +91,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_15_003859) do
     t.bigint "execution_id", null: false
     t.datetime "started_at", precision: nil, null: false
     t.datetime "updated_at", null: false
+    t.index ["execution_id"], name: "index_ductwork_runs_on_execution_id", unique: true
   end
 
   create_table "ductwork_steps", force: :cascade do |t|
@@ -98,8 +103,11 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_15_003859) do
     t.string "status", null: false
     t.string "step_type", null: false
     t.datetime "updated_at", null: false
+    t.index ["pipeline_id", "klass", "status"], name: "index_ductwork_steps_on_pipeline_id_and_klass_and_status"
+    t.index ["pipeline_id", "status", "klass"], name: "index_ductwork_steps_on_pipeline_id_and_status_and_klass"
     t.index ["pipeline_id", "status"], name: "index_ductwork_steps_on_pipeline_id_and_status"
     t.index ["pipeline_id"], name: "index_ductwork_steps_on_pipeline_id"
+    t.index ["status", "klass"], name: "index_ductwork_steps_on_status_and_klass"
   end
 
   create_table "users", force: :cascade do |t|
