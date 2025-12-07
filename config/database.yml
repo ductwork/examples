@@ -87,9 +87,6 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: examples_production
-    username: examples
-    password: <%= ENV["EXAMPLES_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: examples_production_cache
