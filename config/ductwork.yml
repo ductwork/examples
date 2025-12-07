@@ -4,7 +4,7 @@ default: &default
     level: 1
     source: default
   job_worker:
-    count: 5
+    count: <%= ENV.fetch("DUCTWORK_JOB_WORKER_COUNT", 3).to_i %>
     max_retry: 3
     polling_timeout: 1
     shutdown_timeout: 20
