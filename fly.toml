@@ -6,6 +6,8 @@ console_command = '/rails/bin/rails console'
 
 [env]
   PORT = '8080'
+  RAILS_MAX_THREADS = '30'
+  DUCTWORK_JOB_WORKER_COUNT = '5'
 
 [processes]
   app = 'bin/rails server'
