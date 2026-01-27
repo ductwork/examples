@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_07_001446) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_27_202541) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_001446) do
     t.datetime "created_at", null: false
     t.text "definition", null: false
     t.string "definition_sha1", null: false
+    t.datetime "halted_at", precision: nil
     t.string "klass", null: false
     t.datetime "last_advanced_at", precision: nil, null: false
     t.datetime "started_at", precision: nil, null: false
@@ -97,17 +98,32 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_001446) do
   create_table "ductwork_steps", force: :cascade do |t|
     t.datetime "completed_at", precision: nil
     t.datetime "created_at", null: false
+    t.integer "delay_seconds"
     t.string "klass", null: false
+    t.string "node", null: false
     t.bigint "pipeline_id", null: false
     t.datetime "started_at", precision: nil
     t.string "status", null: false
-    t.string "step_type", null: false
+    t.integer "timeout_seconds"
+    t.string "to_transition", null: false
     t.datetime "updated_at", null: false
-    t.index ["pipeline_id", "klass", "status"], name: "index_ductwork_steps_on_pipeline_id_and_klass_and_status"
-    t.index ["pipeline_id", "status", "klass"], name: "index_ductwork_steps_on_pipeline_id_and_status_and_klass"
+    t.index ["pipeline_id", "node", "status"], name: "index_ductwork_steps_on_pipeline_id_and_node_and_status"
+    t.index ["pipeline_id", "status", "node"], name: "index_ductwork_steps_on_pipeline_id_and_status_and_node"
     t.index ["pipeline_id", "status"], name: "index_ductwork_steps_on_pipeline_id_and_status"
     t.index ["pipeline_id"], name: "index_ductwork_steps_on_pipeline_id"
-    t.index ["status", "klass"], name: "index_ductwork_steps_on_status_and_klass"
+    t.index ["status", "node"], name: "index_ductwork_steps_on_status_and_node"
+  end
+
+  create_table "ductwork_tuples", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "first_set_at", null: false
+    t.string "key", null: false
+    t.datetime "last_set_at", null: false
+    t.bigint "pipeline_id", null: false
+    t.string "serialized_value"
+    t.datetime "updated_at", null: false
+    t.index ["key", "pipeline_id"], name: "index_ductwork_tuples_on_key_and_pipeline_id", unique: true
+    t.index ["pipeline_id"], name: "index_ductwork_tuples_on_pipeline_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -125,4 +141,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_07_001446) do
   add_foreign_key "ductwork_results", "ductwork_executions", column: "execution_id"
   add_foreign_key "ductwork_runs", "ductwork_executions", column: "execution_id"
   add_foreign_key "ductwork_steps", "ductwork_pipelines", column: "pipeline_id"
+  add_foreign_key "ductwork_tuples", "ductwork_pipelines", column: "pipeline_id"
 end
