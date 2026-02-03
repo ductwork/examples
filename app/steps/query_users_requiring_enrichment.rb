@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class QueryUsersRequiringEnrichment
+class QueryUsersRequiringEnrichment < Ductwork::Step
   def initialize(days_ago)
     @days_ago = days_ago
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LoadUserData
+class LoadUserData < Ductwork::Step
   def initialize(id)
     @id = id
   end

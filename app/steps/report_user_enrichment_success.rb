@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ReportUserEnrichmentSuccess
+class ReportUserEnrichmentSuccess < Ductwork::Step
   def initialize(*)
     # we don't always have to care about the input argument.
     # for instance, we know the all the previous steps are

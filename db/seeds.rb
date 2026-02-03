@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-1_000.times do |i|
+100.times do |i|
   User.create!(
     name: Faker::Name.name,
     age: Kernel.rand(21..99),

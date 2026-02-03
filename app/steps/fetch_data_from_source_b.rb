@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FetchDataFromSourceB
+class FetchDataFromSourceB < Ductwork::Step
   def initialize(user_data)
     @user_data = user_data
   end

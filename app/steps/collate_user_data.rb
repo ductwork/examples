@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CollateUserData
+class CollateUserData < Ductwork::Step
   def initialize(data)
     @source_a_data = data[0]
     @source_b_data = data[1]
