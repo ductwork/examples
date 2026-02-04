@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "net/http"
+require "uri"
+
 class FetchApiStep < Ductwork::Step
   def initialize(*)
   end
