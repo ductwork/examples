@@ -2,7 +2,7 @@
 
 Rails application with example pipelines. See online documentation for more details.
 
-**[Full Documentation](https://docs.getductwork.io/)**
+**[Full Documentation](https://www.getductwork.io/docs/)**
 
 ## Setup
 
